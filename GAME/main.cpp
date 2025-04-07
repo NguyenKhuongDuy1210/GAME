@@ -261,12 +261,12 @@ void ShowThreats_lv4(vector <ThreatsObject*> list_threats, int number_of_threats
 
 vector<vector<ThreatsObject*>> Make_Threats_list(vector<pair<int, int>>& Time_delay) {
 	vector<vector<ThreatsObject*>> Threats_list;
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 29; i++) {
 		Threats_list.push_back(MakeThreatsList_lv1(5));
 		Time_delay.push_back( {3000 + i * 4000, 1} );
 	}
 
-	for (int i = 0; i < 33; i++) {
+	for (int i = 0; i < 29; i++) {
 		if (i % 2 == 0) {
 			Threats_list.push_back(MakeThreatsList_lv2(5, 150, 100, 0));
 		}
@@ -276,12 +276,12 @@ vector<vector<ThreatsObject*>> Make_Threats_list(vector<pair<int, int>>& Time_de
 		Time_delay.push_back( {5000 + i * 4000, 2} );
 	}
 
-	for (int i = 0;i < 19; i++) {
+	for (int i = 0;i < 20; i++) {
 		Threats_list.push_back(MakeThreatsList_lv3(2, 1220, 100, 100, 300));
 		Time_delay.push_back( { 8000 + i * 6000, 3 } );
 	}
 
-	for (int i = 0; i < 14;i++) {
+	for (int i = 0; i < 21;i++) {
 		Threats_list.push_back(MakeThreatsList_lv4(1, 1220, 350, 0, 0));
 		Time_delay.push_back({ 6000 + i * 6000, 4 });
 	}
@@ -335,12 +335,7 @@ void ResetGame(vector<vector<ThreatsObject*>>& Threats_list, vector<pair<int, in
 	}
 }
 
-
-
-
-
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 	if (!InitData()) return -1;
 // background 1
 	vector<const char*> imagePaths1 = { "background//ruralparallaxsky.png",
@@ -403,14 +398,16 @@ int main(int argc, char* argv[])
 	}
 	explosion2.Set_CLips_Expolsion();
 // load music explosion
+	music.loadImgVolume(renderer);
+	music.setClipsVolume();
 	Mix_Chunk* sound_explosion = music.loadSound("music//explosion.mp3");
-	Mix_VolumeChunk(sound_explosion, VOLUME_MUSIC);
+	Mix_VolumeChunk(sound_explosion, music.getVolume());
 
 	Mix_Chunk* sound_bullet = music.loadSound("music//laser_bullet.mp3");
-	Mix_VolumeChunk(sound_bullet, VOLUME_MUSIC);
+	Mix_VolumeChunk(sound_bullet, music.getVolume());
 
 	Mix_Music* sound_background = music.loadMusic("music//sound_background.mp3");
-	Mix_VolumeMusic(VOLUME_MUSIC);
+	Mix_VolumeMusic(music.getVolume());
 // load text
 	int score = 0;
 	TTF_Font* font = text.loadFont("text//Purisa-BoldOblique.ttf", 20);
@@ -472,6 +469,11 @@ int main(int argc, char* argv[])
 					}
 					player.HandleInputAction(event, renderer, sound_bullet);
 				}
+				if (event.type == SDL_MOUSEBUTTONDOWN) {
+					if (event.button.button == SDL_BUTTON_LEFT) {
+						music.updateVolume(true, mouseX, mouseY);
+					}
+				}
 			}
 			else if (inGameOver) {
 				if (event.type == SDL_QUIT) {
@@ -516,7 +518,11 @@ int main(int argc, char* argv[])
 			scoreText = text.loadText(renderer, scoreStr.c_str(), font, color);
 			text.renderText(renderer, best_scoreText, X_BEST_SCORE, Y_BEST_SCORE);
 		// music
+			music.renderVolume(renderer);
 			music.play(sound_background);
+			Mix_VolumeMusic(music.getVolume());
+			Mix_VolumeChunk(sound_explosion, music.getVolume());
+			Mix_VolumeChunk(sound_bullet, music.getVolume());
 		// máy bay
 			player.RenderPlayer(renderer);
 		// show threats
@@ -645,7 +651,7 @@ int main(int argc, char* argv[])
 			}
 
 			player.Set_Frame_Die(num_die);
-			if (num_die >= 13) {
+			if (num_die >= NUMBER_DIE) {
 				player.Set_Rect_Player(20, 100);
 				player.Set_x_val(0);
 				player.Set_y_val(0);
@@ -665,9 +671,6 @@ int main(int argc, char* argv[])
 			}
 		}
 		else {
-			if (num_die < 14) {
-				menu.Render_End_Game(renderer);
-			}
 			if (score > best_score) {
 				best_score = score;
 				best_scoreStr = "BEST SCORE: " + to_string(best_score);
@@ -675,9 +678,15 @@ int main(int argc, char* argv[])
 			}
 			background.update();
 			background.RenderBackground(renderer);
+			Mix_VolumeMusic(0);
+			Mix_VolumeChunk(sound_explosion, 0);
+			Mix_VolumeChunk(sound_bullet, 0);
 			text.renderText(renderer, scoreText, X_SCORE, Y_SCORE);
 			text.renderText(renderer, best_scoreText, X_BEST_SCORE, Y_BEST_SCORE);
 			player.RenderPlayer(renderer);
+			if (num_die <= NUMBER_DIE + 100) {
+				menu.Render_End_Game(renderer);
+			}
 			menu.Render_Game_Over(renderer, mouseX, mouseY);
 			// cập nhật trạng thái menu
 			menu.Update_GameOver(renderer);
