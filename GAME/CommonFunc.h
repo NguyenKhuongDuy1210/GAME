@@ -24,11 +24,8 @@ const int SCREEN_HEIGHT = 700;
 const int BACKGROUND_WIDTH = 2200;
 const int BACKGROUND_HEIGTH = 700;
 
-const int COLOR_KEY_R = 180;
-const int COLOR_KEY_G = 180;
-const int COLOR_KEY_B = 180;
-
-const int VOLUME_MUSIC = 32;
+const int NUMBER_DIE = 13;
+const int VOLUME_MUSIC = 64;
 const int X_SCORE = 40;
 const int Y_SCORE = 640;
 const int X_BEST_SCORE = 520;
