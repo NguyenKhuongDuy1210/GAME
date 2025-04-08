@@ -684,7 +684,7 @@ int main(int argc, char* argv[]) {
 			text.renderText(renderer, scoreText, X_SCORE, Y_SCORE);
 			text.renderText(renderer, best_scoreText, X_BEST_SCORE, Y_BEST_SCORE);
 			player.RenderPlayer(renderer);
-			if (num_die <= NUMBER_DIE + 100) {
+			if (num_die <= NUMBER_DIE) {
 				menu.Render_End_Game(renderer);
 			}
 			menu.Render_Game_Over(renderer, mouseX, mouseY);
