@@ -295,3 +295,4 @@ void Menu::Render_End_Game(SDL_Renderer* renderer) {
     endGame_Rect = { 0, 0, 1200, 700 };
     SDL_RenderCopy(renderer, endGame_Texture, NULL, &endGame_Rect);
 }
+
