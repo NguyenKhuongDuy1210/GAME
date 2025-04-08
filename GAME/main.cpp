@@ -89,6 +89,93 @@ void changeBackground(vector<const char*> imagePaths, vector <int> speeds)
 	background.setSpeeds(speeds);
 }
 
+bool CheckCollision(const SDL_Rect& object1, const SDL_Rect& object2)
+{
+	int left_a = object1.x + 5;
+	int right_a = object1.x + object1.w - 5;
+	int top_a = object1.y + 5;
+	int bottom_a = object1.y + object1.h - 5;
+
+	int left_b = object2.x + 5;
+	int right_b = object2.x + object2.w - 5;
+	int top_b = object2.y + 5;
+	int bottom_b = object2.y + object2.h - 5;
+
+	// Case 1: size object 1 < size object 2
+	if (left_a > left_b && left_a < right_b)
+	{
+		if (top_a > top_b && top_a < bottom_b)
+		{
+			return true;
+		}
+	}
+
+	if (left_a > left_b && left_a < right_b)
+	{
+		if (bottom_a > top_b && bottom_a < bottom_b)
+		{
+			return true;
+		}
+	}
+
+	if (right_a > left_b && right_a < right_b)
+	{
+		if (top_a > top_b && top_a < bottom_b)
+		{
+			return true;
+		}
+	}
+
+	if (right_a > left_b && right_a < right_b)
+	{
+		if (bottom_a > top_b && bottom_a < bottom_b)
+		{
+			return true;
+		}
+	}
+
+	// Case 2: size object 1 > size object 2
+	if (left_b > left_a && left_b < right_a)
+	{
+		if (top_b > top_a && top_b < bottom_a)
+		{
+			return true;
+		}
+	}
+
+	if (left_b > left_a && left_b < right_a)
+	{
+		if (bottom_b > top_a && bottom_b < bottom_a)
+		{
+			return true;
+		}
+	}
+
+	if (right_b > left_a && right_b < right_a)
+	{
+		if (top_b > top_a && top_b < bottom_a)
+		{
+			return true;
+		}
+	}
+
+	if (right_b > left_a && right_b < right_a)
+	{
+		if (bottom_b > top_a && bottom_b < bottom_a)
+		{
+			return true;
+		}
+	}
+
+	// Case 3: size object 1 = size object 2
+	if (top_a == top_b && right_a == right_b && bottom_a == bottom_b)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 // threats level 1
 vector <ThreatsObject*> MakeThreatsList_lv1(int number_of_threats)
 {
@@ -552,7 +639,7 @@ int main(int argc, char* argv[]) {
 								trect.w = p_threat->get_width_frame();
 								trect.h = p_threat->get_height_frame();
 								//
-								bool bCol = SDLCommonFunc::CheckCollision(brect, trect);
+								bool bCol = CheckCollision(brect, trect);
 								if (bCol && trect.x <= 1100)
 								{
 									int explosion_x = p_threat->get_x_pos() - 60;
@@ -589,7 +676,7 @@ int main(int argc, char* argv[]) {
 					rect_threat.w = p_threat->get_width_frame();
 					rect_threat.h = p_threat->get_height_frame();
 					//
-					bool check1 = SDLCommonFunc::CheckCollision(rect_player, rect_threat);
+					bool check1 = CheckCollision(rect_player, rect_threat);
 					if (check1) {
 						num_die++;
 						int explosion_x = p_threat->get_x_pos() - 60;
@@ -622,7 +709,7 @@ int main(int argc, char* argv[]) {
 							t_rect_bullet.y = t_bullet->get_bullet_y_pos();
 							t_rect_bullet.w = 20;
 							t_rect_bullet.h = 15;
-							bool check1 = SDLCommonFunc::CheckCollision(rect_player, t_rect_bullet);
+							bool check1 = CheckCollision(rect_player, t_rect_bullet);
 							if (check1) {
 								num_die++;
 								p_threat->EraseBullet(b);
