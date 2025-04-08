@@ -773,6 +773,10 @@ int main(int argc, char* argv[]) {
 			player.RenderPlayer(renderer);
 			if (num_die < NUMBER_DIE) {
 				menu.Render_End_Game(renderer);
+				TTF_Font* win_font = text.loadFont("text//Purisa-BoldOblique.ttf", 50);
+				string win_scoreStr = "YOUR SCORE: " + to_string(score);
+				SDL_Texture* win_scoreText = text.loadText(renderer, win_scoreStr.c_str(), win_font, color);
+				text.renderText(renderer, win_scoreText, 340, 200);
 			}
 			menu.Render_Game_Over(renderer, mouseX, mouseY);
 			// cập nhật trạng thái menu
