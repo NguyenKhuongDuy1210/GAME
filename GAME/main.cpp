@@ -416,7 +416,7 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* scoreText = text.loadText(renderer, scoreStr.c_str(), font, color);
 	
 	int best_score = 0;
-	string best_scoreStr = "BEST SCORE: " + to_string(best_score);
+	string best_scoreStr = "HIGH SCORE: " + to_string(best_score);
 	SDL_Texture* best_scoreText = text.loadText(renderer, best_scoreStr.c_str(), font, color);
 // load menu
 	menu.LoadMenu_Game(renderer);
@@ -673,7 +673,7 @@ int main(int argc, char* argv[]) {
 		else {
 			if (score > best_score) {
 				best_score = score;
-				best_scoreStr = "BEST SCORE: " + to_string(best_score);
+				best_scoreStr = "HIGH SCORE: " + to_string(best_score);
 				best_scoreText = text.loadText(renderer, best_scoreStr.c_str(), font, color);
 			}
 			background.update();
@@ -684,7 +684,7 @@ int main(int argc, char* argv[]) {
 			text.renderText(renderer, scoreText, X_SCORE, Y_SCORE);
 			text.renderText(renderer, best_scoreText, X_BEST_SCORE, Y_BEST_SCORE);
 			player.RenderPlayer(renderer);
-			if (num_die <= NUMBER_DIE) {
+			if (num_die < NUMBER_DIE) {
 				menu.Render_End_Game(renderer);
 			}
 			menu.Render_Game_Over(renderer, mouseX, mouseY);
