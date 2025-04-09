@@ -771,7 +771,7 @@ int main(int argc, char* argv[]) {
 			text.renderText(renderer, scoreText, X_SCORE, Y_SCORE);
 			text.renderText(renderer, best_scoreText, X_BEST_SCORE, Y_BEST_SCORE);
 			player.RenderPlayer(renderer);
-			if (num_die < NUMBER_DIE) {
+			if (num_die < NUMBER_DIE && num_die != 0) {
 				menu.Render_End_Game(renderer);
 				TTF_Font* win_font = text.loadFont("text//Purisa-BoldOblique.ttf", 50);
 				string win_scoreStr = "YOUR SCORE: " + to_string(score);
